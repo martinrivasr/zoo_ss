@@ -50,3 +50,21 @@ def test_anyadir_entradas_a_grupo():
     assert grupo.total == 55
 
 
+def test_cantidad_entradas_por_tipo ():
+    grupo = Grupo_Entrada()
+    grupo.add_entrada (10)
+
+    assert grupo.cantidad_entradas_por_tipo(TipoEntrada.NIÑO) == 1
+
+    grupo.add_entrada(36)
+    assert grupo.cantidad_entradas_por_tipo(TipoEntrada.ADULTO) == 1
+
+    grupo.add_entrada(14)
+    assert grupo.cantidad_entradas_por_tipo(TipoEntrada.ADULTO) == 2
+
+def test_subtotal_por_tipo ():
+    grupo = Grupo_Entrada()
+    grupo.add_entrada (10)
+
+    assert grupo.subtotal_tipo(TipoEntrada.NIÑO) == 14
+
