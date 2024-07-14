@@ -1,5 +1,5 @@
 from app.modelos import Grupo_Entrada,TipoEntrada
-from app.utils import print_centrado, Input
+from app.utils import print_centrado, input_centrado
 import os
 
 class VistaGrupo:
@@ -36,8 +36,8 @@ class VistaEntrada:
         self.color = color
 
     def paint(self):
-        print_centrado(self.etiqueta, self.x, self.y, self.color)
-        return input().strip()
+        
+        return input_centrado(self.etiqueta, self.x, self.y, self.color)
 
 #if __name__ == "__main__":    
 #    os.system('cls')

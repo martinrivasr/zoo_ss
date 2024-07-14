@@ -1,6 +1,6 @@
 from app.vistas import VistaEntrada, VistaGrupo
 from app.modelos import Grupo_Entrada
-from app.utils import print_centrado, Input
+from app.utils import print_centrado, input_centrado, Cls
 import shutil
 import os
 
@@ -13,13 +13,14 @@ class Zoo:
         self.x = x
         self.y = y
         self.vista_grupo = VistaGrupo(self.grupo_entradas, self.x, self.y, self.color)
-        self.entrada_edad = VistaEntrada("EDAD: ", self.x, self.y +10 , self.color)
+        self.entrada_edad = VistaEntrada("EDAD: ", self.x, self.y + 10 , self.color)
         self.entrada_seguir = VistaEntrada("Otra vez (S/n): ", self.x,self.y + 12, self.color)
 
 # Bucle de pantalla 
     def run(self):
         while True:
-            os.system('cls')
+            #os.system('cls')
+            Cls ()
             self.vista_grupo.paint()
             edad = self.entrada_edad.paint()
             if edad == "":
@@ -35,5 +36,5 @@ class Zoo:
             self.grupo_entradas.add_entrada(edad)
 
             # Final "controlado" del programa
-        print_centrado("Pulse enter para salir", 1, shutil.get_terminal_size().lines - 2)
-        Input()
+        print_centrado("Pulse enter para salir", 1, shutil.get_terminal_size().lines - 2, self.color)
+        input()

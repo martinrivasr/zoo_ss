@@ -1,4 +1,8 @@
 from utils import print_centrado
+import shutil
+import os
+import sys
+import msvcrt
 
 # Datos de ejemplo
 tipo = type('Tipo', (object,), {"name": "Ejemplo", "value": type('Value', (object,), {"precio": 10.50})()})()
@@ -13,37 +17,57 @@ print_centrado(texto_formateado, 20, 4 + 3 + indice, "azul")
 
 
 
-from app.vistas import VistaEntrada, VistaGrupo
-from app.modelos import Grupo_Entrada
-from app.utils import print_centrado, Input
-import shutil
-import os
+def input_centrado(prompt, x=0, y=0, color="default"):
+    # Obtener las dimensiones de la terminal actual
+    ancho_terminal = shutil.get_terminal_size().columns
+    alto_terminal = shutil.get_terminal_size().lines
 
-grupo_entradas = Grupo_Entrada()
+    # Diccionario de colores ANSI
+    colores = {
+        "default": "\033[0m",
+        "negro": "\033[30m",
+        "rojo": "\033[31m",
+        "verde": "\033[32m",
+        "amarillo": "\033[33m",
+        "azul": "\033[34m",
+        "magenta": "\033[35m",
+        "cian": "\033[36m",
+        "blanco": "\033[37m",
+    }
 
-x = (shutil.get_terminal_size().columns - 37) // 2
+    # Obtener el código de color, por defecto es el color por defecto de la terminal
+    color_code = colores.get(color.lower(), "\033[0m")
 
-vista_grupo = VistaGrupo(grupo_entradas, x, 1)
-entrada_edad = VistaEntrada("EDAD: ", x, 10)
-entrada_seguir = VistaEntrada("Otra vez (S/n): ", x, 12)
-
-# Bucle de pantalla 
-while True:
-    os.system('cls')
-    vista_grupo.paint()
-    edad = entrada_edad.paint()
-    if edad == "":
-        respuesta = entrada_seguir.paint()
-        if respuesta == "S":
-            grupo_entradas = Grupo_Entrada()
-            vista_grupo.grupo = grupo_entradas
-            continue
-        else:
-            break
+    # Si x y y son mayores que 0, se usan como coordenadas de inicio para el prompt
+    if x > 0 or y > 0:
+        columna_inicio = x
+        fila_inicio = y
     else:
-        edad = int(edad)
-        grupo_entradas.add_entrada(edad)
+        # Si no, se centran el prompt en la terminal
+        columna_inicio = (ancho_terminal - len(prompt)) // 2
+        fila_inicio = alto_terminal // 2
 
-# Final "controlado" del programa
-print_centrado("Pulse enter para salir", 1, shutil.get_terminal_size().lines - 2)
-Input()
+    # Mover el cursor a la posición especificada y luego imprimir el prompt con el color
+    print(f"\033[{fila_inicio};{columna_inicio}H{color_code}{prompt}\033[0m", end="", flush=True)
+
+    # Posicionar el cursor para la entrada del usuario
+    input_usuario = ""
+    while True:
+        char = msvcrt.getch()
+        if char == b'\r':  # Enter
+            break
+        elif char == b'\x08':  # Backspace
+            if len(input_usuario) > 0:
+                input_usuario = input_usuario[:-1]
+                print("\b \b", end="", flush=True)
+        else:
+            input_usuario += char.decode()
+            print(char.decode(), end="", flush=True)
+
+    print()  # Mover a la siguiente línea después de la entrada
+    return input_usuario
+
+
+nombre = input_centrado ("escribe tu nombre : ",10,10,"rojo")
+
+print_centrado (nombre,10,11, "azul")
