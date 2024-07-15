@@ -3,6 +3,7 @@ from app.modelos import Grupo_Entrada
 from app.utils import print_centrado, input_centrado, Cls
 import shutil
 import os
+import time
 
 class Zoo:
 
@@ -32,8 +33,15 @@ class Zoo:
                 else:
                     break
             
-            edad = int(edad)
-            self.grupo_entradas.add_entrada(edad)
+
+
+
+            if int(edad) > 99 :
+                print_centrado("La edad no debe ser mayor a 99, ingrese nuevamente", self.x, self.y + 12 , self.color)
+                time.sleep(1)
+            else:
+                edad = int(edad)
+                self.grupo_entradas.add_entrada(edad)
 
             # Final "controlado" del programa
         print_centrado("Pulse enter para salir", 1, shutil.get_terminal_size().lines - 2, self.color)

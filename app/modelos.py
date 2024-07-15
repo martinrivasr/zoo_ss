@@ -30,8 +30,8 @@ class Entradas:
 
 
     def __validate_edad(self, edad):
-        if edad < 0 == 0:
-            raise ValueError("la edad no debe ser negativa")
+        if edad < 0 == 0 or edad > 99:
+            raise ValueError("la edad no debe ser negativa, o mayor a 99")
 class Grupo_Entrada:
     def __init__(self):
         self.total = 0
